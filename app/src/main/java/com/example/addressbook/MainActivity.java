@@ -5,13 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     //Member Variable --------------------
@@ -25,8 +29,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView addressTXT;
     private ListView   listView;
 
-    // Data
-    private ArrayList<Address> addressList = new ArrayList<>();
+    private Button  addBTN, delBTN;
+
+    // List
+    private ArrayList<HashMap <String, String>> arrayList;
+    private SimpleAdapter   adapter;
+    private HashMap<String,String> map;
 
     //Member Method - AppCompatActivity;s override --------------------
     @Override
@@ -40,11 +48,21 @@ public class MainActivity extends AppCompatActivity {
         phoneETXT = findViewById(R.id.phoneETXT);
         emailETXT = findViewById(R.id.emailETXT);
         addressTXT = findViewById(R.id.addressTXT);
+
         listView = findViewById(R.id.listview);
 
         // 디버깅을 위해 true로 넣은 값을 false로 넣어주면 확인 안됨
         if (D) Log.i(TAG, "onCreate()");
         Toast.makeText(this, "⌯'▾'⌯ ", Toast.LENGTH_LONG).show();
+
+        arrayList = new ArrayList<HashMap<String, String>>();
+
+        adapter = new SimpleAdapter(MainActivity.this,
+                                    arrayList,
+                                    R.layout.haha_item,
+                                    new String[] {"name", "phone","email"},
+                                    new int[] {R.id.text_name, R.id.text_phone, R.id.text_email});
+        listView.setAdapter(adapter);
     }
 
     // Member Method - custom --------------------------------
@@ -54,43 +72,32 @@ public class MainActivity extends AppCompatActivity {
         switch(v.getId())
         {
             case R.id.addBTN:
-                // 3개 editText 값 읽어서 Address 객체 생성 및 추가
-                // (1) 3개 editText 값 입력 여부 체크
-                if (nameETXT.getText().length()>0 && phoneETXT.getText().length()>0 && emailETXT.getText().length() > 0)
-                {
-                    // (2) Address 객체 생성 및 Arraylist 추가
-                    addressList.add(new Address(nameETXT.getText().toString(),
-                                                phoneETXT.getText().toString(),
-                                                emailETXT.getText().toString()));
 
-                    // 제대로 들어갔는지 개수 확인
-                    Log.i(TAG, "add =>" + addressList.size());
+                map = new HashMap<String,String>();
+                map.put("name", String.valueOf(nameETXT.getText()));
+                map.put("phone", String.valueOf(phoneETXT.getText()));
+                map.put("email", String.valueOf(emailETXT.getText()));
 
-                    // 3개 입력 필드 초기화
+                if (nameETXT.getText().length()>0 && phoneETXT.getText().length()>0 && emailETXT.getText().length() > 0) {
+                    arrayList.add(map);
+
+                    adapter.notifyDataSetChanged();
+
                     initETXT();
 
-                    // TextView에 데이터 출력
-                   displayAddress();
-                } else {
-                    Log.i(TAG, "abc =");
-                    // (2-2) 사용자에게 알림 띄우기
-                    Toast.makeText(this, R.string.add_msg, Toast.LENGTH_LONG).show();
-                }
+                } else Toast.makeText(this, R.string.add_msg, Toast.LENGTH_LONG).show();
+
                 break;
 
             case R.id.delBTN:
-                    // 가장 최근에 생성된 데이터 삭제
-                if (addressList.size() > 0) {
-                    int lastIdx = addressList.size() - 1;
-                    addressList.remove(lastIdx);
 
-                    // 데이터 출력
-                    displayAddress();
-                }
-                     else {
-                    Log.i(TAG, "delBTN =");
-                    Toast.makeText(this, R.string.del_msg, Toast.LENGTH_LONG).show();
-                }
+                // 마지막 값을 얻고 싶다면 index NUM에서 - 1
+                int lastIdx = arrayList.size() - 1;
+                if (arrayList.size() == 0)
+                    return;
+                arrayList.remove(lastIdx);
+                adapter.notifyDataSetChanged();
+
                 break;
         }
     }
@@ -101,19 +108,6 @@ public class MainActivity extends AppCompatActivity {
         nameETXT.setText("");
         phoneETXT.setText("");
         emailETXT.setText("");
-    }
-
-    // Address 출력 메서드 ------------
-    private void displayAddress() {
-        String datas = "";
-        for (int idx = 0; idx < addressList.size(); idx++)
-            // datas에 뒤에 변수를 더하는 것
-            datas += addressList.get(idx).getInfo() + "\n";
-
-        if (datas.length() > 0)
-            addressTXT.setText(datas);
-        else
-            addressTXT.setText(R.string.nothing);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.addressbook;
 
+// ListView 표시될 한 개의 Item
 // alt + Insert ==> 단축키
 
 public class Address {
@@ -7,14 +8,18 @@ public class Address {
     private String name;
     private String phone;
     private String email;
+    private int     ImgResId;
 
     //Constructor Method  ----------------
-    public Address(String name, String phone, String email) {
+    public Address(String name, String phone, String email, int imgResId) {
         this.name = name;
         this.phone = phone;
         this.email = email;
+        ImgResId = imgResId;
+
     }
 
+    // Member variable 제어 메서드
     // Getter / Setter Method ---------------------
     // class에 있는 객체를 쓰려고 기본적으로 있어야함 
 

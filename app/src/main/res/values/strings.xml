@@ -16,4 +16,6 @@
     <string name="del_msg">The item does NOT exist.</string>
     <string name="addressbook">연락처</string>
     <string name="back">back</string>
+    <string name="EXAMLIST">EXAM LIST</string>
+    <string name="profile">내 프로필</string>
 </resources>
