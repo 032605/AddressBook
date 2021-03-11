@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Address Book</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="emailETXT">12345@gmail.com</string>
+    <string name="phoneETXT">010-1234-5678</string>
+    <string name="nameETXT">아무개</string>
+    <string name="del">삭제</string>
+    <string name="add">추가</string>
+    <string name="address">address</string>
+    <string name="view">보기</string>
+    <string name="order">이름 전화번호 이메일</string>
+    <string name="nothing">Nothing</string>
+    <string name="add_msg">You must enter All items.</string>
+    <string name="del_msg">The item does NOT exist.</string>
+    <string name="addressbook">연락처</string>
+    <string name="back">back</string>
+</resources>
